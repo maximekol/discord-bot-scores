@@ -3,5 +3,8 @@
   "prefix" : "=",
   "useFakeID" : false,
   "masterRoleName" : "Score Master",
-  "playersRoleName" : "@everyone"
+  "playersRoleName" : "@everyone",
+  "reactionScoreUpdate" : "👍",
+  "reactionFeedbackSucess" : "😄",
+  "reactionFeedbackFail" : "🥺"
 }

@@ -35,7 +35,7 @@ client.on("ready", () => {
 client.on('messageReactionAdd', (reaction, user) => {
   if (!checkMessageAuthorIsMaster(reaction.message, user)) return;
 
-  if(reaction.emoji.name === '👍') {
+  if(reaction.emoji.name === config.reactionScoreUpdate) {
     userid = reaction.message.author.id
     scoreIncrease(userid, 1)
   }
@@ -44,7 +44,7 @@ client.on('messageReactionAdd', (reaction, user) => {
 client.on('messageReactionRemove', (reaction, user) => {
   if (!checkMessageAuthorIsMaster(reaction.message, user)) return;
 
-  if(reaction.emoji.name === '👍') {
+  if(reaction.emoji.name === config.reactionScoreUpdate) {
     userid = reaction.message.author.id
     scoreDecrease(userid, 1)
   }
@@ -75,7 +75,7 @@ client.on("message", (message) => {
   // only master is allowed to call the additionnal command
   if(!checkMessageAuthorIsMaster(message, message.author)) {
     message.channel.send('Hey <@' + message.author.id + '>! You re not a Score Master');
-    message.react('🥺');
+    message.react(config.reactionFeedbackFail);
     return;
   }
 
@@ -123,7 +123,7 @@ client.on("message", (message) => {
 });
 
 function sendReactionFeedback(message) {
-  message.react('😄');
+  message.react(config.reactionFeedbackSucess);
 }
 
 function processScoreCmd(cmd, args, message) {
