@@ -1,0 +1,31 @@
+{
+  "name": "discord-bot-scores",
+  "version": "1.0.0",
+  "description": "Discord bot that count the users score",
+  "main": "src/index.js",
+  "dependencies": {
+    "chart.js": "^2.9.3",
+    "chartjs-node-canvas": "^3.0.6",
+    "chartjs-plugin-datalabels": "^0.7.0",
+    "discord.js": "^12.1.1",
+    "discord": "^0.8.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maximekol/discord-bot-scores.git"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "game"
+  ],
+  "author": "Maxime Kolly",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/maximekol/discord-bot-scores/issues"
+  },
+  "homepage": "https://github.com/maximekol/discord-bot-scores#readme"
+}
