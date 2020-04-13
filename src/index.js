@@ -27,6 +27,11 @@ const scoreAdd = (id) => {
   if(!scores[id] ) { scores[id] = 0;}
 };
 
+const scoreRemove = (id) => {
+  delete scores[id]
+  //if(!scores[id] ) { scores[id] = 0;}
+}
+
 client.on("ready", () => {
   console.log("I am ready to start scoring");
   client.user.setActivity(`Shazam !`);
@@ -83,8 +88,12 @@ client.on("message", (message) => {
     // take frist instruction only
     cmd = getCmdFromCommand(commands[0])
     args = getArgsFromCommand(commands[0])
-    if(cmd == "p") {
+    if(cmd == "pa") {
       addPlayers(args, message)
+      sendReactionFeedback(message)
+      return
+    } else if (cmd == "pr"){
+      removePlayers(args, message)
       sendReactionFeedback(message)
       return
     }
@@ -100,7 +109,7 @@ client.on("message", (message) => {
     for(var i=0; i< commands.length; i++) {
       cmd = getCmdFromCommand(commands[i])
       args = getArgsFromCommand(commands[i])
-      allcommandValid == allcommandValid && isCommandValid(cmd, args, message)
+      allcommandValid = allcommandValid && isCommandValid(cmd, args, message)
     }
 
     if (allcommandValid) {
@@ -145,8 +154,9 @@ function processScoreCmd(cmd, args, message) {
 function isCommandValid(cmd, args, message) {
   var mentionList = getMentionArray(args)
   var scoreUpdate = getCommandValue(cmd)
+  cmdvalid = (cmd.startsWith('+') || cmd.startsWith('-')) ? true : false
   validated = validateMentionArrayFromMessage(message, mentionList)
-  let isValid = (scoreUpdate && validated & mentionList.length > 0) ? (true) : (false)
+  isValid = (cmdvalid && scoreUpdate && validated && mentionList.length > 0) ? true : false
   return isValid
 }
 
@@ -155,7 +165,7 @@ function processScoreIncrease(cmd, args, message) {
   var scoreUpdate = getCommandValue(cmd)
   var mentionList = getMentionArray(args)
   validated = validateMentionArrayFromMessage(message, mentionList)
-  let isValid = (scoreUpdate && validated & mentionList.length > 0) ? (true) : (false)
+  let isValid = (scoreUpdate && validated & mentionList.length > 0) ? true : false
   if (isValid) {
     for(var i=0; i< mentionList.length; i++) {
       scoreIncrease(mentionList[i], scoreUpdate);
@@ -195,6 +205,21 @@ function addPlayers(args, message) {
         sucess = true
       } else {
         message.channel.send('Hey <@' + message.author.id + '>! Who are the players to add?');
+      }
+    }
+}
+
+function removePlayers(args, message) {
+    var mentionList = getMentionArray(args)
+    if (mentionList) {
+      validated = validateMentionArrayFromMessage(message, mentionList)
+      if (validated & mentionList.length > 0) {
+        for(var i=0; i< mentionList.length; i++) {
+          scoreRemove(mentionList[i]);
+        }
+        sucess = true
+      } else {
+        message.channel.send('Hey <@' + message.author.id + '>! Who are the players to remove?');
       }
     }
 }
@@ -258,12 +283,15 @@ function checkMessageAuthorIsMaster(message, user)  {
 };
 
 function getCmdFromCommand(command) {
-  split = command.split(+/ +/g);
-  return split[0].trim()
+  split = command.split(/ +/g);
+  // if command start with spaces remove them
+  cmd = (split[0].trim() == '' && split.length > 1) ? (split[1] ) : (split[0])
+  return cmd.trim()
 }
 function getArgsFromCommand(command) {
   split = command.split(/ +/g);
-  return split.slice(1)
+  args = (split[0].trim() == '') ? (split.slice(2) ) : (split.slice(1))
+  return args
 }
 function getCommandsFromMessage(message) {
   withoutPrefix = message.content.slice(config.prefix.length);
