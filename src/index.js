@@ -98,8 +98,13 @@ client.on("message", (message) => {
       return
     }
     else if (cmd == "r") {
-      scores = {};    sucess = true
+      sucess = true
       scores = {};
+      sendReactionFeedback(message)
+      return
+    }
+    else if (cmd == "w") {
+      sendWinnerMessage(scores, message)
       sendReactionFeedback(message)
       return
     }
@@ -323,6 +328,27 @@ function getUserNamesFromIds(message, usersIds) {
   return labelUserNamesArray
 }
 
+function sendWinnerMessage(scores, message) {
+  // Extract Score Data Winnerss only
+  scoresResult = Object.values(scores)
+  if (scoresResult.length < 1) return
+
+  const scoreMax = Math.max.apply(null, scoresResult);
+
+  usersIds = []
+  Object.entries(scores).forEach(([key, value]) => {
+      if (value == scoreMax) {
+        usersIds.push(key)
+      }
+  });
+
+  messageWinner = 'Congrats '
+  for(var i=0; i< usersIds.length; i++) {
+    messageWinner += '<@' + usersIds[i] + '> '
+  }
+
+  message.channel.send(messageWinner + 'https://tenor.com/view/amber-riley-msamberpriley-dacing-happy-winner-gif-16856779');
+}
 async function createScoreImage(scores, message) {
   // Extract Score Data
   usersIds = []
