@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 var { CanvasRenderService } = require('chartjs-node-canvas');
 var pluginChart = require('chartjs-plugin-datalabels');
+var tenor = require('tenorjs');
 
 // load config
 const config = require("./config.json");
@@ -8,6 +9,15 @@ const config = require("./config.json");
 const client = new Discord.Client();
 
 var scores = {};
+
+// Connect Tenor GIF
+const Tenor = require("tenorjs").client({
+    "Key": config.tenorKey,
+    "Filter": "off",
+    "Locale": "en_US",
+    "MediaFilter": "minimal",
+    "DateFormat": "D/MM/YYYY - H:mm:ss A"
+});
 
 const scoreIncrease = (id, value) => {
   newvalue = (scores[id]) ? (scores[id] + value) : (+value)
@@ -105,6 +115,10 @@ client.on("message", (message) => {
     }
     else if (cmd == "w") {
       sendWinnerMessage(scores, message)
+      sendReactionFeedback(message)
+      return
+    } else if (cmd == "g") {
+      sendRandomTenor(message, args)
       sendReactionFeedback(message)
       return
     }
@@ -347,8 +361,23 @@ function sendWinnerMessage(scores, message) {
     messageWinner += '<@' + usersIds[i] + '> '
   }
 
-  message.channel.send(messageWinner + 'https://tenor.com/view/amber-riley-msamberpriley-dacing-happy-winner-gif-16856779');
+  // Get GIF
+  Tenor.Search.Random("winner", "1").then(Results => {
+    Results.forEach(Post => {
+      message.channel.send(`${messageWinner} ${Post.url}`);
+    });
+  }).catch(console.error);
 }
+
+function sendRandomTenor(message, args){
+  Tenor.Search.Random(args.join(' '), "1").then(Results => {
+    Results.forEach(Post => {
+      message.channel.send(`${Post.url}`);
+    });
+  }).catch(console.error);
+}
+
+
 async function createScoreImage(scores, message) {
   // Extract Score Data
   usersIds = []

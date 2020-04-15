@@ -7,8 +7,9 @@
     "chart.js": "^2.9.3",
     "chartjs-node-canvas": "^3.0.6",
     "chartjs-plugin-datalabels": "^0.7.0",
+    "discord": "^0.8.2",
     "discord.js": "^12.1.1",
-    "discord": "^0.8.2"
+    "tenorjs": "^1.0.7"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

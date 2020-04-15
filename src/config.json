@@ -6,5 +6,6 @@
   "playersRoleName" : "@everyone",
   "reactionScoreUpdate" : "👍",
   "reactionFeedbackSucess" : "😄",
-  "reactionFeedbackFail" : "🥺"
+  "reactionFeedbackFail" : "🥺",
+  "tenorKey": "KEY"
 }
