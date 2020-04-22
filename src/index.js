@@ -499,6 +499,7 @@ async function createScoreImage(scores, message) {
       canvasRenderService._chartJs.defaults.global.defaultFontColor = '#FFF'
       canvasRenderService._chartJs.defaults.global.defaultFontSize = font_size
       canvasRenderService._chartJs.defaults.global.defaultFontStyle = '600'
+      canvasRenderService._chartJs.defaults.global.defaultFontFamily = "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
       canvasRenderService._chartJs.defaults.global.legend.display = false;
       canvasRenderService._chartJs.helpers.merge(canvasRenderService._chartJs.defaults.global.plugins.datalabels, {
         color: '#FE777B'
