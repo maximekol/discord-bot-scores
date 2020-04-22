@@ -1,10 +1,31 @@
-const Discord = require("discord.js");
-var { CanvasRenderService } = require('chartjs-node-canvas');
-var pluginChart = require('chartjs-plugin-datalabels');
-var tenor = require('tenorjs');
+process.on('unhandledRejection', (reason) => {
+  console.error(reason);
+  process.exit(1);
+});
+
+// Check dependency installation
+try  {
+  var Discord = require("discord.js");
+  var { CanvasRenderService } = require('chartjs-node-canvas');
+  var pluginChart = require('chartjs-plugin-datalabels');
+  var tenor = require('tenorjs');
+} catch (e) {
+  console.log(e.stack);
+  console.log(process.version);
+  console.log("Please run npm install and ensure it passes with no errors!"); // if there is an error, tell to install dependencies.
+  process.exit();
+}
 
 // load config
 const config = require("./config.json");
+
+// Get authentication data
+try {
+  var authConfig = require("./auth.json");
+} catch (e){
+  console.log("Please create an auth.json like auth.json.example with a bot token or an email and password.\n"+e.stack); // send message for error - no token 
+  process.exit(); 
+}
 
 const client = new Discord.Client();
 
@@ -12,7 +33,7 @@ var scores = {};
 
 // Connect Tenor GIF
 const Tenor = require("tenorjs").client({
-    "Key": config.tenorKey,
+    "Key": authConfig.tenorKey,
     "Filter": "off",
     "Locale": "en_US",
     "MediaFilter": "minimal",
@@ -492,4 +513,4 @@ async function createScoreImage(scores, message) {
   return null
 };
 
-client.login(config.token);
+client.login(authConfig.token);

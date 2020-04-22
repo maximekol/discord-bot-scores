@@ -1,11 +1,9 @@
 {
-  "token"  : "Token",
   "prefix" : "=",
   "useFakeID" : false,
   "masterRoleName" : "Score Master",
   "playersRoleName" : "@everyone",
   "reactionScoreUpdate" : "👍",
   "reactionFeedbackSucess" : "😄",
-  "reactionFeedbackFail" : "🥺",
-  "tenorKey": "KEY"
+  "reactionFeedbackFail" : "🥺"
 }
